@@ -33,6 +33,17 @@ Engineered features:
 - credit_gap: absolute difference between CreditScore1 and CreditScore2
 - price_to_income: MedianVehiclePrice divided by (Income + 1) to avoid division by zero
 
+ One-hot encoded categorical columns: 
+- CensusGeoRegionAddress
+- LeadSource
+- ModeDeviceType
+- ModeVehicleType
+- PhoneType
+- ServiceProvider
+- AgeCategory
+- InboundCallContact
+- ClicksQuintile
+
 ## Baseline Conversion by Outreach Status (Before Optimization)
 Conversion rates are computed for three outreach conditions:
 - not attempted: no outbound call attempts recorded
