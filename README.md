@@ -32,7 +32,7 @@ Engineered features:
 - credit_gap: absolute difference between CreditScore1 and CreditScore2
 - price_to_income: MedianVehiclePrice divided by (Income + 1) to avoid division by zero
 
- One-hot encoded categorical columns: 
+One-hot encoded categorical columns: 
 - CensusGeoRegionAddress
 - LeadSource
 - ModeDeviceType
