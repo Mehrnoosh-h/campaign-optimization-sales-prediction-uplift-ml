@@ -47,8 +47,12 @@ Observed differences in conversion rates can occur by chance, so hypothesis test
 - Not attempted: 29.04%
 - Attempted: 40.71%
 - Contacted: 43.41%
-
 These are descriptive differences from historical data and do not by themselves prove causality, since customers who were called or reached may differ systematically from those not called.
+
+
+##Statistical Validation of Baseline Differences
+Baseline conversion rates are compared across outreach groups to check whether the observed gaps are likely to reflect real differences rather than random variation. Three complementary approaches are used: (1) proportion-based significance tests (two-proportion z-test and an equivalent 2×2 chi-square test), (2) a 95% confidence interval for the absolute lift to quantify effect size and uncertainty, and (3) a nonparametric permutation test that shuffles group labels to estimate how often a lift as large as observed would occur under random labeling. These checks validate whether the baseline differences are statistically reliable before moving to modeling and campaign optimization.
+
 
 ## Predictive Modeling (Prioritization)
 A predictive model is trained to estimate each customer’s probability of purchasing within 45 days. The objective is predictive accuracy and generalizability to support ranking customers for outreach. Model validation is performed using a holdout or cross-validation approach to estimate future performance.
