@@ -1,6 +1,5 @@
 # campaign-optimization-sales-prediction-uplift-ml
 
-# Outbound Campaign Optimization with Sales Prediction and Uplift Modeling
 
 ## Overview
 This project evaluates an outbound calling campaign run by a Customer Advocate Center. The campaign targets newly registered customers who have not yet purchased, aiming to answer questions about the purchase process and offer assistance. As the business scales, outreach costs increase, so the analysis focuses on quantifying campaign impact on sales and designing a strategy that improves productivity.
