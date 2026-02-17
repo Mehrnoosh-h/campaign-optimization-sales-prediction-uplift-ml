@@ -22,14 +22,6 @@ Three datasets are used:
 ## Campaign Rules and Attribution
 Customers are eligible for outreach when an account exists and no purchase has occurred yet. For analysis, a sale is attributed to the campaign when a call attempt exists for that customer and a purchase occurs within 45 days of account creation.
 
-## Data Preparation
-All tables are loaded and joined into a customer-level analytical dataset. Call history is aggregated to capture outreach exposure (attempted) and outcomes (contacted). Sales history is linked to determine whether a purchase occurred within the attribution window.
-
-Engineered features include:
-- sold: 1 if a purchase occurs within 45 days of account creation, else 0
-- high_credit: 1 if CreditScore1 is above the dataset median, else 0
-- high_income: 1 if income is above the 80th percentile, else 0
-
 ## Descriptive Analysis
 Sale conversion rates are computed for three outreach conditions:
 - not attempted: no outbound call attempts recorded
@@ -54,6 +46,14 @@ These are descriptive differences from historical data and do not by themselves 
 
 Baseline conversion rates are compared across outreach groups to check whether the observed gaps are likely to reflect real differences rather than random variation. Three complementary approaches are used: (1) proportion-based significance tests (two-proportion z-test and an equivalent 2×2 chi-square test), (2) a 95% confidence interval for the absolute lift to quantify effect size and uncertainty, and (3) a nonparametric permutation test that shuffles group labels to estimate how often a lift as large as observed would occur under random labeling. These checks validate whether the baseline differences are statistically reliable before moving to modeling and campaign optimization.
 
+## Data Preparation
+All tables are loaded and joined into a customer-level analytical dataset. Call history is aggregated to capture outreach exposure (attempted) and outcomes (contacted). Sales history is linked to determine whether a purchase occurred within the attribution window.
+
+Engineered features include:
+- sold: 1 if a purchase occurs within 45 days of account creation, else 0
+- high_credit: 1 if CreditScore1 is above the dataset median, else 0
+- high_income: 1 if income is above the 80th percentile, else 0
+- 
 
 ## Predictive Modeling (Prioritization)
 A predictive model is trained to estimate each customer’s probability of purchasing within 45 days. The objective is predictive accuracy and generalizability to support ranking customers for outreach. Model validation is performed using a holdout or cross-validation approach to estimate future performance.
