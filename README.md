@@ -70,6 +70,7 @@ This indicates the observed lift is extremely unlikely under random labeling alo
 
 ## Conversion Lift Heterogeneity by Credit Score and Income
 This section checks whether lift differs across customer segments (high_credit vs not, high_income vs not), and whether differences are likely due to chance.
+Note: in this section, `treat` refers to the attempted indicator (1 = attempted, 0 = not attempted).
 
 Methods:
 - Segment definition: create high_credit (CreditScore1 above median) and high_income (Income above 80th percentile).
