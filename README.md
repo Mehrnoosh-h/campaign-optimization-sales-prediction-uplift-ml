@@ -38,16 +38,14 @@ Observed differences in conversion rates can occur by chance, so hypothesis test
 
 ## Conversion Lift Heterogeneity by Credit Score and Income
 
-- Goal: evaluate whether the conversion lift associated with being contacted differs across customer segments (high_credit vs not, high_income vs not), and determine whether observed differences are likely due to chance.
-
-- Methods:
+Goal: evaluate whether the conversion lift associated with being contacted differs across customer segments (high_credit vs not, high_income vs not), and determine whether observed differences are likely due to chance.
+Methods:
 
  - Segment definition: create high_credit (CreditScore1 above median) and high_income (Income above 80th percentile).
  - Stratified lift estimation: within each segment, compare conversion for contacted customers (treatment) vs not-attempted customers (control) and compute absolute lift.
  - Significance + uncertainty: run a two-proportion z-test and compute a 95% confidence interval for the lift within each segment.
  - Formal heterogeneity test: fit an interaction logistic regression sold ~ treat * segment and evaluate the interaction term to test whether lift differs across segments.
-
-- Results and conclusions:
+Results and conclusions:
 
  - Credit: lift is large and statistically significant for non–high-credit customers, while high-credit customers show near-zero lift; the interaction model confirms the lift differs by credit segment.
  - Income: lift is positive and statistically significant for both income groups, with a larger lift for high-income customers; the interaction model indicates the lift is statistically higher for high-income than for low-income customers.
