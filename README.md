@@ -174,34 +174,10 @@ After customers are ranked by the model score, ROI is evaluated by choosing a ca
   - Net value is `E[revenue] − dialing_cost`.
   - The program is considered worthwhile under a policy when incremental net value remains positive after costs (subject to operational capacity constraints).
 
+## Repository Contents
 
+The datasets used in this analysis are not included in this repository. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Suggested Repository Structure
-- data/
-  - raw/ (optional or placeholder)
-  - processed/
-- notebooks/
-- src/
-- reports/
-  - business_presentation.pptx
-  - technical_writeup.md
+- Notebooks/
+  - campaign_impact_and_call_prioritization.ipynb
 - README.md
