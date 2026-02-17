@@ -82,9 +82,6 @@ Results and conclusions:
 - Credit: lift is large and statistically significant for non–high-credit customers, while high-credit customers show near-zero lift; the interaction model confirms the lift differs by credit segment.
 - Income: lift is positive and statistically significant for both income groups, with a larger lift for high-income customers; the interaction model indicates the lift is statistically higher for high-income than for low-income customers.
 
-
-
-
 ## Predictive Modeling (XGBoost for Prioritization)
 
 A gradient-boosted decision tree model (XGBoost) is used to predict purchase propensity and support customer ranking.
@@ -123,8 +120,6 @@ To attempt performance gains without changing the model, additional ratio-based 
 
 The tuned XGBoost model is then retrained using the same split and early stopping procedure. Test performance remains essentially unchanged (ROC-AUC ≈ 0.732, PR-AUC ≈ 0.620), indicating these engineered ratios did not add meaningful incremental predictive signal beyond the existing feature set for this dataset.
 
-
-
 ## Interpretable Modeling (Logistic Regression for Call Impact)
 A logistic regression model is used to describe the relationship between outbound calling and conversion while controlling for customer attributes. Logistic regression is selected for interpretability: coefficients can be directly inspected to understand the direction and relative strength of associations, and interaction terms can be added to test whether the call relationship varies across segments.
 
@@ -148,43 +143,57 @@ A second logistic regression uses the same preprocessing but replaces SMOTE with
 
 Overall, the class-weighted logistic regression is preferred for interpretation because it avoids synthetic samples while achieving comparable performance to the SMOTE version. Predictive performance from logistic regression is lower than the tuned XGBoost model, which remains the primary model for ranking and prioritization.
 
-
-
-
-
-
-
-
-
-## Predictive Modeling (Prioritization)
-A predictive model is trained to estimate each customer’s probability of purchasing within 45 days. The objective is predictive accuracy and generalizability to support ranking customers for outreach. Validation is performed using a holdout or cross-validation approach to estimate future performance. The output is a purchase propensity score per customer.
-
-## Interpretable Modeling (Call Impact)
-A separate interpretable model is built to describe the relationship between outbound calling and probability of sale while controlling for customer attributes that may confound the relationship. Because the campaign is not randomized, results are interpreted as associations rather than definitive causal effects.
-
 ## Calling Strategy and ROI
+
+### Goal
+Use the selected model to decide whether the outbound calling program should continue and, if so, produce an ordered calling list that specifies which customers to attempt and in what priority order. The strategy is evaluated by estimating expected improvement in conversion relative to the current approach and translating that lift into expected revenue impact, then comparing expected benefit to dialing cost ($0.10 per attempt).
+
+### Model Chosen (Ranking-Based Targeting)
+Because the operational problem is capacity-constrained outreach, the model is selected based on ranking quality (PR-AUC and top-k precision/capture) rather than a single fixed classification threshold. XGBoost consistently outperforms logistic regression on these ranking metrics, making it the best choice for prioritizing calls. The model is used as a triage tool: customers are sorted by predicted purchase probability and called from the top of the list until capacity or ROI limits are reached.
+
+### Strategy
 A call strategy is created to improve productivity by:
-- ranking customers by expected purchase propensity or incremental value
-- flagging customers recommended for calling when expected benefit exceeds cost
+- ranking customers by predicted purchase propensity (model score)
+- selecting a calling cutoff (top-k or probability threshold) based on expected net value
+- flagging customers recommended for calling and ordering them by priority
 
-Expected improvement is estimated relative to the current approach by comparing:
-- projected lift in conversion rate
-- projected revenue impact using available sale-related fields when appropriate
-- net value after dialing costs, assuming a cost of $0.10 per dial
+### ROI Estimation (How It Is Calculated)
+After customers are ranked by the model score, ROI is evaluated by choosing a calling cutoff (top-k% or a score threshold) and comparing expected outcomes under that targeted calling rule versus the current approach.
 
-## Deliverables
-- business_presentation.pptx: short slide deck for non-technical stakeholders summarizing findings, recommendations, and ROI
-- technical_writeup.md (or .pdf): brief documentation of data preparation, testing, modeling choices, and validation
-- data/processed/: intermediate datasets created during cleaning, joining, and feature engineering
-- src/ or notebooks/: reproducible code to regenerate results with minimal modifications
+- Projected change in conversion rate:
+  - Expected buyers under a policy are estimated by summing predicted probabilities: `E[buyers] = Σ p_i` over the customers included by the calling rule.
+  - The projected conversion rate is then `E[buyers] / N`.
+  - Improvement is reported as the difference between the targeted policy conversion and the current baseline conversion.
 
-## Assumptions and Limitations
-- All datasets are synthetic and fabricated for the exercise.
-- Customer attributes are treated as measured consistently three days after account creation.
-- The 45-day window is applied relative to account creation for sold and attribution.
-- Call attempts and contact outcomes are aggregated at the customer level to match customer-level outcomes.
-- Outreach is not randomly assigned; segment differences and call effects should be interpreted as associations.
-- Operational constraints (capacity limits, calling hours) can be incorporated if available.
+- Projected revenue impact:
+  - If a per-sale value proxy is available (e.g., sticker price or median vehicle price), expected revenue is computed as `E[revenue] = Σ (p_i × value_i)` for the targeted set (or using an average sale value when a customer-level value is not used).
+  - Revenue uplift is the difference between targeted-policy expected revenue and the current baseline expected revenue.
+
+- Net value after dialing costs:
+  - Dialing cost is computed as `$0.10 × (# customers called)`.
+  - Net value is `E[revenue] − dialing_cost`.
+  - The program is considered worthwhile under a policy when incremental net value remains positive after costs (subject to operational capacity constraints).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Suggested Repository Structure
 - data/
