@@ -125,7 +125,28 @@ The tuned XGBoost model is then retrained using the same split and early stoppin
 
 
 
+## Interpretable Modeling (Logistic Regression for Call Impact)
+A logistic regression model is used to describe the relationship between outbound calling and conversion while controlling for customer attributes. Logistic regression is selected for interpretability: coefficients can be directly inspected to understand the direction and relative strength of associations, and interaction terms can be added to test whether the call relationship varies across segments.
 
+### Multicollinearity Check (VIF)
+To stabilize coefficients and avoid inflated standard errors, multicollinearity is screened using variance inflation factors (VIF) on the full design matrix (treatment indicator + numeric/binary controls + one-hot categorical controls). Highly collinear predictors are removed iteratively and VIF is recomputed after each update until the treatment variable (attempted) and remaining controls have acceptable VIF levels (most below ~10, with a small number slightly above but still usable). This reduces coefficient instability while preserving explanatory coverage.
+
+Dropped columns due to collinearity:
+- CreditScore1, CreditScore2, credit_mean
+- MedianVehicleFuelEcon, MedianVehicleMileage, MedianVehiclePrice
+- VehicleVelocity30, FraudScore
+
+### Imbalance Handling: SMOTE + Logistic Regression
+An `ImbPipeline` is used to keep preprocessing consistent while applying SMOTE only on the training split (median imputation → SMOTE → scaling → logistic regression). Test performance is modest:
+- TEST ROC-AUC ≈ 0.580  
+- TEST PR-AUC ≈ 0.425  
+
+### Imbalance Handling: Class-Weighted Logistic Regression (No SMOTE)
+A second logistic regression uses the same preprocessing but replaces SMOTE with `class_weight="balanced"` to address imbalance via weighted loss (median imputation → scaling → logistic regression). Results are similar:
+- TEST ROC-AUC ≈ 0.581  
+- TEST PR-AUC ≈ 0.424  
+
+Overall, the class-weighted logistic regression is preferred for interpretation because it avoids synthetic samples while achieving comparable performance to the SMOTE version. Predictive performance from logistic regression is lower than the tuned XGBoost model, which remains the primary model for ranking and prioritization.
 
 
 
