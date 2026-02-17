@@ -43,6 +43,13 @@ Observed differences in conversion rates can occur by chance, so hypothesis test
 - high_credit vs. not high_credit
 - high_income vs. not high_income
 
+## Baseline 45-day conversion rates by outreach status (Before Optimization)
+- Not attempted: 29.04%
+- Attempted: 40.71%
+- Contacted: 43.41%
+
+These are descriptive differences from historical data and do not by themselves prove causality, since customers who were called or reached may differ systematically from those not called.
+
 ## Predictive Modeling (Prioritization)
 A predictive model is trained to estimate each customer’s probability of purchasing within 45 days. The objective is predictive accuracy and generalizability to support ranking customers for outreach. Model validation is performed using a holdout or cross-validation approach to estimate future performance.
 
