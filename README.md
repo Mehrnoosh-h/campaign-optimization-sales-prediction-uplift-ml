@@ -51,6 +51,7 @@ These are descriptive differences from historical data and do not by themselves 
 
 
 ##Statistical Validation of Baseline Differences
+
 Baseline conversion rates are compared across outreach groups to check whether the observed gaps are likely to reflect real differences rather than random variation. Three complementary approaches are used: (1) proportion-based significance tests (two-proportion z-test and an equivalent 2×2 chi-square test), (2) a 95% confidence interval for the absolute lift to quantify effect size and uncertainty, and (3) a nonparametric permutation test that shuffles group labels to estimate how often a lift as large as observed would occur under random labeling. These checks validate whether the baseline differences are statistically reliable before moving to modeling and campaign optimization.
 
 
