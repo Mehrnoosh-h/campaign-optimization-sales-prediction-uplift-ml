@@ -29,6 +29,9 @@ Engineered features:
 - sold: 1 if a purchase occurs within 45 days of account creation, else 0
 - high_credit: 1 if CreditScore1 is above the dataset median, else 0
 - high_income: 1 if income is above the 80th percentile, else 0
+- credit_mean: mean of CreditScore1 and CreditScore2 (row-wise, ignoring missing values)
+- credit_gap: absolute difference between CreditScore1 and CreditScore2
+- price_to_income: MedianVehiclePrice divided by (Income + 1) to avoid division by zero
 
 ## Baseline Conversion by Outreach Status (Before Optimization)
 Conversion rates are computed for three outreach conditions:
